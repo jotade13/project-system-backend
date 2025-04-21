@@ -22,7 +22,10 @@ class UpdateProjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string',
+            'description' => 'required|string',
+            'ownwe_id' => 'exists:users,id',
+            'status' => 'string|in:IN_PROGRESS,COMPLETED,CANCELLED',
         ];
     }
 }
