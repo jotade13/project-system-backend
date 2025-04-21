@@ -24,7 +24,7 @@ class CreateProjectRequest extends FormRequest
         return [
             'name' => 'required|string',
             'description' => 'required|string',
-            'ownwe_id' => 'exists:users,id',
+            'owner_id' => 'exists:users,id',
             'status' => 'string|in:IN_PROGRESS,COMPLETED,CANCELLED',
         ];
     }

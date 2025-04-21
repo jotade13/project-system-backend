@@ -12,7 +12,6 @@ Route::post('/register', [AuthController::class, 'register']);
 
 Route::get('/test', function(){return('asdasd');});
 
-Route::post('/projects',[ProjectController::class,'store']);
 
 Route::middleware('auth:api')->group(function () {
 
@@ -22,9 +21,10 @@ Route::middleware('auth:api')->group(function () {
     // Route::get('/users',[UserController::class,'index']);
     // Route::put('/users/{task:id}',[UserController::class,'update']);
     // Route::delete('/users/{task:id}',[UserController::class,'destroy']);
-
+    
+    Route::post('/projects',[ProjectController::class,'store']);
     // Route::get('/projects',[ProjectController::class,'index']);
-    // Route::put('/projects/{projects:id}',[ProjectController::class,'update']);
+    Route::put('/projects/{project:id}',[ProjectController::class,'update']);
     // Route::delete('/projects/{projects:id}',[ProjectController::class,'destroy']);
 
     // Route::post('/tasks',[TaskController::class,'store']);

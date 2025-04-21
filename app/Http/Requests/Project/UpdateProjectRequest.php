@@ -2,6 +2,9 @@
 
 namespace App\Http\Requests\Project;
 
+use App\Models\Project;
+
+
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateProjectRequest extends FormRequest
@@ -11,7 +14,11 @@ class UpdateProjectRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        
+        $projectId = $this->route('project'); // e.g. 42
+        $project = Project::findOrFail($projectId->id);
+
+        return $project->owner_id == auth()->id();
     }
 
     /**
@@ -24,7 +31,6 @@ class UpdateProjectRequest extends FormRequest
         return [
             'name' => 'required|string',
             'description' => 'required|string',
-            'ownwe_id' => 'exists:users,id',
             'status' => 'string|in:IN_PROGRESS,COMPLETED,CANCELLED',
         ];
     }
