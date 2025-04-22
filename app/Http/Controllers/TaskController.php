@@ -8,15 +8,27 @@ use App\Models\Task;
 
 class TaskController extends Controller
 {
-    public function store(CreateTaskRequest $request)
+    public function index()
     {
         $user = auth()->user();
-        $task = Task::create($request->validated());
-        return response()->json([
-            'res' => true,
-            'msg' => 'Task created successfully',
-            'data' => $task
-        ],200);
+
+        if($user->role=='USER')
+        {
+            $tasks = Task::where('Assigned_to_id', $user->id);
+            return response()->json([
+                'success' => true,
+                'message' => 'Tasks found successfully.',
+                'data'    => $tasks,
+            ], 200);
+        }else
+        {
+            $tasks = Task::all();
+            return response()->json([
+                'success' => true,
+                'message' => 'tasks found successfully.',
+                'data'    => $tasks,
+            ], 200);
+        }
     }
 
     public function update(UpdateTaskRequest $request, Task $task)

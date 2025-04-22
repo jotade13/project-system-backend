@@ -5,10 +5,19 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Project\CreateProjectRequest;
 use App\Http\Requests\Project\UpdateProjectRequest;
 use App\Models\Project;
-use App\odels\User;
+use App\Models\Task;
 
 class ProjectController extends Controller
 {
+    public function index()
+    {
+        $project = Project::all();
+        return response()->json([
+            'success' => true,
+            'message' => 'Project found successfully.',
+            'data'    => $project,
+        ], 200);
+    }
     public function store(CreateProjectRequest $request)
     {
         $user = auth()->user();
