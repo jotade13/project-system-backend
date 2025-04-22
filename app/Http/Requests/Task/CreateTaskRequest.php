@@ -11,7 +11,8 @@ class CreateTaskRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        $user = auth()->user();
+        return    $user->role=='ADMIN'||$user->role=='SUPERVISOR';
     }
 
     /**
@@ -22,7 +23,12 @@ class CreateTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+           'title' => 'string',
+           'description' => 'string',
+           'project_id' => 'exists:projects,id',
+           'assigned_to_id' => 'exists:users,id',
+           'status' => 'string|in:PENDING,IN_PROGRESS,COMPLETED',
+           'priority' => 'string|in:LOW,MEDIUM,HIGH'
         ];
     }
 }
