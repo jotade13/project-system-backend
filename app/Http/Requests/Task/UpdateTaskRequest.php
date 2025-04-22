@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Task;
 
+use App\Models\Task;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateTaskRequest extends FormRequest
@@ -11,7 +12,11 @@ class UpdateTaskRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        $task_route = $this->route('project'); // e.g. 42
+        $task = Task::findOrFail($task_route->id);
+        $user = auth()->user();
+
+        return $user->role == 'ADMIN' ||$user->role == 'SUPERVISOR'||($task->assigned_to == $user->id);
     }
 
     /**
@@ -22,7 +27,12 @@ class UpdateTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+           'title' => 'string',
+           'description' => 'string',
+           'project_id' => 'exists:projects,id',
+           'assigned_to_id' => 'exists:users,id',
+           'status' => 'string|in:PENDING,IN_PROGRESS,COMPLETED',
+           'priority' => 'string|in:LOW,MEDIUM,HIGH'
         ];
     }
 }

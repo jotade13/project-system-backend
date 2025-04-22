@@ -5,6 +5,7 @@ namespace App\Http\Requests\Project;
 use App\Models\Project;
 
 
+
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateProjectRequest extends FormRequest
@@ -14,11 +15,11 @@ class UpdateProjectRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        
         $projectId = $this->route('project'); // e.g. 42
         $project = Project::findOrFail($projectId->id);
+        $user = auth()->user();
 
-        return $project->owner_id == auth()->id();
+        return $user->role == 'ADMIN' ||($user->role == 'SUPERVISOR' && $project->owner_id == $user->id);
     }
 
     /**
