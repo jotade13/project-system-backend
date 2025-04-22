@@ -12,7 +12,7 @@ class UpdateTaskRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        $task_route = $this->route('project'); // e.g. 42
+        $task_route = $this->route('task'); // e.g. 42
         $task = Task::findOrFail($task_route->id);
         $user = auth()->user();
 

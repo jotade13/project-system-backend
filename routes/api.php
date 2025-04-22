@@ -23,12 +23,12 @@ Route::middleware('auth:api')->group(function () {
     // Route::delete('/users/{task:id}',[UserController::class,'destroy']);
     
     Route::post('/projects',[ProjectController::class,'store']);
-    // Route::get('/projects',[ProjectController::class,'index']);
+    Route::get('/projects',[ProjectController::class,'index']);
     Route::put('/projects/{project:id}',[ProjectController::class,'update']);
-    // Route::delete('/projects/{projects:id}',[ProjectController::class,'destroy']);
+    Route::delete('/projects/{project:id}',[ProjectController::class,'destroy']);
 
-    // Route::post('/tasks',[TaskController::class,'store']);
-    // Route::get('/tasks',[TaskController::class,'index']);
-    // Route::put('/tasks/{task:id}',[TaskController::class,'update']);
-    // Route::delete('/tasks/{task:id}',[TaskController::class,'destroy']);
+    Route::post('/tasks',[TaskController::class,'store']);
+    Route::get('/tasks',[TaskController::class,'index']);
+    Route::put('/tasks/{task:id}',[TaskController::class,'update']);
+    Route::delete('/tasks/{task:id}',[TaskController::class,'destroy']);
 });
