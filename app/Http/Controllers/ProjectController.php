@@ -13,11 +13,11 @@ class ProjectController extends Controller
     {
         $user = auth()->user();
 
-        $task = $user->ownedProjects()->create($request->validated());
+        $project = $user->ownedProjects()->create($request->validated());
         return response()->json([
             'res' => true,
             'msg' => 'Project created successfully',
-            'data' => $task
+            'data' => $project
         ],200);
     }
 
