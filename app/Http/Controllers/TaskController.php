@@ -30,6 +30,25 @@ class TaskController extends Controller
             ], 200);
         }
     }
+    public function store(CreateTaskRequest $request)
+    {
+        $user = auth()->user();
+
+        if($user->role=='ADMIN'||$user->role=='SUPERVISOR'){
+            $task = Task::create($request->validated());
+            return response()->json([
+                'res' => true,
+                'msg' => 'Project created successfully',
+                'data' => $task
+            ],200);
+        }
+
+        return response()->json([
+            'res' => false,
+            'msg' => 'user cannot create the project '
+        ], 403); 
+        
+    }
 
     public function update(UpdateTaskRequest $request, Task $task)
     {
