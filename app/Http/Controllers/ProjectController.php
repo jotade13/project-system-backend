@@ -56,5 +56,26 @@ class ProjectController extends Controller
             'msg' => 'user cannot delete the project '
         ], 403);  
     }
+    public function show($id)
+    {
+        $user = auth()->user();
+
+        $project = Project::find($id);
+
+        if (!$project||!$user) {
+            return response()->json([
+                'res' => false,
+                'msg' => 'Project not found'
+            ], 404); 
+        }
+        if($user)
+        {
+            return response()->json([
+                'res' => true,
+                'msg' => 'Project founded successfully',
+                'data' => $project
+            ],200);
+        }
+    }
 
 }

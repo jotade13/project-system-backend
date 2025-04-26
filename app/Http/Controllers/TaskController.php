@@ -76,4 +76,25 @@ class TaskController extends Controller
             'msg' => 'User cannot delete the task '
         ], 403);  
     }
+    public function show($id)
+    {
+        $user = auth()->user();
+
+        $task = Task::find($id);
+
+        if (!$task||!$user) {
+            return response()->json([
+                'res' => false,
+                'msg' => 'Task not found'
+            ], 404); 
+        }
+        if($user)
+        {
+            return response()->json([
+                'res' => true,
+                'msg' => 'Task founded successfully',
+                'data' => $task
+            ],200);
+        }
+    }
 }
