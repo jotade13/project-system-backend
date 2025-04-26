@@ -26,9 +26,11 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/projects',[ProjectController::class,'index']);
     Route::put('/projects/{project:id}',[ProjectController::class,'update']);
     Route::delete('/projects/{project:id}',[ProjectController::class,'destroy']);
+    Route::get('/projects/{project:id}',[ProjectController::class,'show']);
 
     Route::post('/tasks',[TaskController::class,'store']);
     Route::get('/tasks',[TaskController::class,'index']);
     Route::put('/tasks/{task:id}',[TaskController::class,'update']);
     Route::delete('/tasks/{task:id}',[TaskController::class,'destroy']);
+    Route::get('/tasks/{task:id}',[TaskController::class,'show']);
 });
