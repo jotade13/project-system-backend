@@ -19,8 +19,9 @@ Route::middleware('auth:api')->group(function () {
  //   Route::post(/);
 
     Route::get('/users',[UserController::class,'index']);
-    Route::put('/users/{task:id}',[UserController::class,'update']);
-    Route::delete('/users/{task:id}',[UserController::class,'destroy']);
+    // Route::put('/users/{task:id}',[UserController::class,'update']);
+    // Route::delete('/users/{task:id}',[UserController::class,'destroy']);
+
     
     Route::post('/projects',[ProjectController::class,'store']);
     Route::get('/projects',[ProjectController::class,'index']);
@@ -28,9 +29,16 @@ Route::middleware('auth:api')->group(function () {
     Route::delete('/projects/{project:id}',[ProjectController::class,'destroy']);
     Route::get('/projects/{project:id}',[ProjectController::class,'show']);
 
+
     Route::post('/tasks',[TaskController::class,'store']);
     Route::get('/tasks',[TaskController::class,'index']);
     Route::put('/tasks/{task:id}',[TaskController::class,'update']);
     Route::delete('/tasks/{task:id}',[TaskController::class,'destroy']);
     Route::get('/tasks/{task:id}',[TaskController::class,'show']);
+    
+
+    Route::get('/dashboard/users/metrics',[UserController::class,'userMetrics']);
+    Route::get('/dashboard/tasks/metrics',[TaskController::class,'taskMetrics']);
+    Route::get('/dashboard/projects/metrics',[ProjectController::class,'projectMetrics']);
+
 });

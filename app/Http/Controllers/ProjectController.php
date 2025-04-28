@@ -90,9 +90,8 @@ class ProjectController extends Controller
             ], 401);
         }
 
-        $userId = $user->id;
         
-        $metrics = Task::where('user_id', $userId)->count();
+        $metrics = Project::count();
 
         return response()->json([
             'success' => true,
