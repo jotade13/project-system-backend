@@ -111,7 +111,7 @@ class TaskController extends Controller
 
         $userId = $user->id;
         
-        $metrics = Task::where('user_id', $userId)->count();
+        $metrics = Task::where('assigned_to_id', $userId)->count();
 
         return response()->json([
             'success' => true,

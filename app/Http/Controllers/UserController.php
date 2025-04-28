@@ -43,8 +43,7 @@ class UserController extends Controller
         {
             return response()->json([
                 'total_users' => User::count(),
-                'new_users_today' => User::whereDate('created_at', today())->count(),
-                'active_users' => User::where('last_login_at', '>=', now()->subDays(30))->count()
+            //   'new_users_today' => User::whereDate('created_at', today())->count(),
             ]);
         }
     }
