@@ -97,4 +97,26 @@ class TaskController extends Controller
             ],200);
         }
     }
+
+    public function taskMetrics()
+    {
+       $user = auth()->user();
+        
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Usuario no autenticado',
+            ], 401);
+        }
+
+        $userId = $user->id;
+        
+        $metrics = Task::where('user_id', $userId)->count();
+
+        return response()->json([
+            'success' => true,
+            'data' => $metrics,
+            'message' => 'Métricas de tareas obtenidas exitosamente',
+        ]);
+    }
 }
