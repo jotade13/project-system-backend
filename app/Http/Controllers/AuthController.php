@@ -20,11 +20,13 @@ class AuthController extends Controller
             'last_name' => $request->last_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => $request->role
         ]);
 
         $token = JWTAuth::fromUser($user);
-
-        return response()->json(compact('user', 'token'), 201);
+        $role = $user->role;
+        
+        return response()->json(compact('role', 'token'), 201);
     }
 
 
@@ -37,7 +39,9 @@ class AuthController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        return response()->json(compact('token'));
+        $role = auth()->user()->role;
+
+        return response()->json(compact('role','token'));
     }
 
     public function logout()
