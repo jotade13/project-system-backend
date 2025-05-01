@@ -29,32 +29,42 @@ class UserController extends Controller
     }
     public function update(Request $request, User $user)
     {
-        $user = auth()->user();
-            if($user->update($request->all())||$user->role=='ADMIN')
-            {
-                $user->update($request->all());
-                return response()->json([
-                    'res' => true,
-                    'msg' => 'user updated successfully',
-                ],200);
-            }
+        $userAuth = auth()->user();
+        
+        
+        if($userAuth->role=='ADMIN')
+        {
+            $allowedFields = ['first_name', 'last_name', 'email','password','role'];
+            $data = $request->only($allowedFields);
+
+            $filteredData = array_filter($data, function ($value) {
+                return $value !== null && $value !== '';
+            });
+
+            $user->update($filteredData);
+            return response()->json([
+                'res' => true,
+                'msg' => 'user updated successfully',
+            ],200);
+        }
     }
 
     public function destroy(User $user)
     {
-        $user = auth()->user();
+        $userAuth = auth()->user();
 
-        if($user->role=='ADMIN')
+        if($userAuth->role=='ADMIN')
         {
-            $user->delete();
+            $result = $user->forceDelete();
+            $result = $user->delete();
             return response()->json([
                 'res' => true,
-                'msg' => 'Task deleted successfully'
+                'msg' => 'User deleted successfully'
             ],200);
         }
         return response()->json([
             'res' => false,
-            'msg' => 'User cannot delete the task '
+            'msg' => 'User cannot delete the User '
         ], 403);  
     }
 
