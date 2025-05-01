@@ -19,8 +19,8 @@ Route::middleware('auth:api')->group(function () {
  //   Route::post(/);
 
     Route::get('/users',[UserController::class,'index']);
-    Route::put('/users/{task:id}',[UserController::class,'update']);
-    Route::delete('/users/{task:id}',[UserController::class,'destroy']);
+    Route::put('/users/{user:id}',[UserController::class,'update']);
+    Route::delete('/users/{user:id}',[UserController::class,'destroy']);
 
     
     Route::post('/projects',[ProjectController::class,'store']);

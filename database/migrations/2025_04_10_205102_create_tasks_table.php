@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->foreignId('project_id')->constrained();
-            $table->foreignId('assigned_to_id')->constrained('users');
+            $table->foreignId('assigned_to_id')->constrained('users')->onDelete('cascade');
             $table->enum('status', ['PENDING', 'IN_PROGRESS', 'COMPLETED'])->default('PENDING');
             $table->enum('priority', ['LOW', 'MEDIUM', 'HIGH'])->default('MEDIUM');
             $table->timestamps();
