@@ -33,6 +33,8 @@ class UpdateProjectRequest extends FormRequest
             'name' => 'required|string',
             'description' => 'required|string',
             'status' => 'string|in:IN_PROGRESS,COMPLETED,CANCELLED',
+            'users' => 'array',
+            'users.*.value' => 'required|exists:users,id'
         ];
     }
 }

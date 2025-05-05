@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
 class Project extends Model
 {
     use HasFactory;
@@ -25,7 +26,7 @@ class Project extends Model
     // Relación con usuarios asignados (muchos a muchos)
     public function assignedUsers()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class,'projects_user');
     }
 
     // Relación con tareas
