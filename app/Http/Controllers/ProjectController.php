@@ -5,13 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Project\CreateProjectRequest;
 use App\Http\Requests\Project\UpdateProjectRequest;
 use App\Models\Project;
-use App\Models\Task;
+use Illuminate\Support\Facades\DB;
 
 class ProjectController extends Controller
 {
     public function index()
     {
-        $project = Project::all();
+        $project = Project::with('assignedUsers:id,first_name')->get();
         return response()->json([
             'success' => true,
             'message' => 'Project found successfully.',
@@ -21,22 +21,58 @@ class ProjectController extends Controller
     public function store(CreateProjectRequest $request)
     {
         $user = auth()->user();
+        try {
+            DB::beginTransaction();
 
-        $project = $user->ownedProjects()->create($request->validated());
-        return response()->json([
-            'res' => true,
-            'msg' => 'Project created successfully',
-            'data' => $project
-        ],200);
+            $project = $user->ownedProjects()->create($request->validated());
+
+            $userIds = collect($request['users'])->pluck('value')->toArray();
+
+            $project->assignedUsers()->sync($userIds);
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Proyecto creado exitosamente',
+                'project' => $project,
+                'users' => $project->users
+            ], 201);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'error' => 'Error al crear el proyecto',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 
     public function update(UpdateProjectRequest $request, Project $project)
     {
-           $project->update($request->all());
+        try {
+            DB::beginTransaction();
+
+            $project->update($request->validated());
+
+            $userIds = collect($request['assigned_users'])->pluck('value')->toArray();
+
+            $project->assignedUsers()->sync($userIds);
+
+            DB::commit();
+
             return response()->json([
-                'res' => true,
-                'msg' => 'Project updated successfully',
-            ],200);
+                'message' => 'Proyecto creado exitosamente',
+                'project' => $project,
+                'users' => $project->users
+            ], 201);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'error' => 'Error al crear el proyecto',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 
     public function destroy(Project $project)
@@ -89,8 +125,6 @@ class ProjectController extends Controller
                 'message' => 'Usuario no autenticado',
             ], 401);
         }
-
-        
         $metrics = Project::count();
 
         return response()->json([
@@ -99,5 +133,4 @@ class ProjectController extends Controller
             'message' => 'Métricas de tareas obtenidas exitosamente',
         ]);
     }
-
 }

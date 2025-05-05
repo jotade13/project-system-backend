@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\User\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -27,21 +29,18 @@ class UserController extends Controller
                 ], 200);
             }
     }
-    public function update(Request $request, User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
         $userAuth = auth()->user();
         
-        
+
         if($userAuth->role=='ADMIN')
         {
-            $allowedFields = ['first_name', 'last_name', 'email','password','role'];
-            $data = $request->only($allowedFields);
-
-            $filteredData = array_filter($data, function ($value) {
-                return $value !== null && $value !== '';
-            });
-
-            $user->update($filteredData);
+            $data = $request->validated();
+            if (isset($data['password'])) {
+                $data['password'] = Hash::make($data['password']);
+            }
+            $user->update($data);
             return response()->json([
                 'res' => true,
                 'msg' => 'user updated successfully',
