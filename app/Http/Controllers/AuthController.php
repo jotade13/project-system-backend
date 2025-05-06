@@ -38,10 +38,11 @@ class AuthController extends Controller
         if (! $token = Auth::attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
+        $user = auth()->user();
+        $role =  $user->role;
+        $id =  $user->id;
 
-        $role = auth()->user()->role;
-
-        return response()->json(compact('role','token'));
+        return response()->json(compact('role','id','token'));
     }
 
     public function logout()

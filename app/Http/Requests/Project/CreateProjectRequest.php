@@ -27,8 +27,8 @@ class CreateProjectRequest extends FormRequest
             'description' => 'required|string',
             'owner_id' => 'exists:users,id',
             'status' => 'string|in:IN_PROGRESS,COMPLETED,CANCELLED',
-            'users' => 'required|array',
-            'users.*.value' => 'required|exists:users,id'
+            'assigned_users' => 'required|array',
+            'assigned_users.*.value' => 'required|exists:users,id'
         ];
     }
 }
