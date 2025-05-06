@@ -26,7 +26,7 @@ class ProjectController extends Controller
 
             $project = $user->ownedProjects()->create($request->validated());
 
-            $userIds = collect($request['users'])->pluck('value')->toArray();
+            $userIds = collect($request['assigned_users'])->pluck('value')->toArray();
 
             $project->assignedUsers()->sync($userIds);
 
